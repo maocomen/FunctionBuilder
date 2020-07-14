@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AttributedStringBuilder",
+        "repositoryURL": "https://github.com/carson-katri/AttributedStringBuilder",
+        "state": {
+          "branch": null,
+          "revision": "d2e66992fa56d438f30fb1ebe235f22cbdca7ea8",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
