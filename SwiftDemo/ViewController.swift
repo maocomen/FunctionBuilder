@@ -59,58 +59,71 @@ extension NSAttributedString {
 }
 
 @_functionBuilder
-struct TestBuilder {
+struct StringBuilder {
     
-    static func buildBlock(_ strings: String...) -> String {
-        return strings.joined(separator: "\n")
+    typealias Component = [String]
+    typealias Expression = String
+    
+    static func buildBlock(_ components: Component...) -> Component {
+        components.flatMap{ $0 }
     }
     
-    static func buildExpression(_ text: String) -> String {
-        text
-    }
-    
-    static func buildExpression(_ num: Int) -> String {
-        "\(num)"
+    static func buildExpression(_ text: Expression) -> Component {
+        [text]
     }
 
-    static func buildEither(first: String) -> String {
-        "[1-\(first)]"
+    static func buildExpression(_ num: Int) -> Component {
+        ["\(num)"]
     }
 
-    static func buildEither(second: String) -> String {
-        "[2-\(second)]"
+    static func buildExpression(_ float: Double) -> Component {
+        ["\(float)"]
+    }
+
+    static func buildEither(first: Component) -> Component {
+        first
+    }
+
+    static func buildEither(second: Component) -> Component {
+        second
     }
     
-    static func buildIf(_ string: String?) -> String {
-        "[if-\(string ?? "")]"
+    static func buildIf(_ component: Component?) -> Component {
+        component ?? []
     }
     
-    static func buildDo(_ strings: String...) -> String {
-        strings.joined(separator: "\n")
+    static func buildDo(_ components: [Component]) -> Component {
+        components.flatMap({ $0 })
+    }
+    
+    static func buildArray(_ array: [Component]) -> Component {
+        array.flatMap({ $0 })
     }
 }
 
 extension String {
-    init(@TestBuilder builder: () -> String) {
-        self.init(stringLiteral: builder())
+    init(separator: String, @StringBuilder builder: () -> [String]) {
+        self = builder().joined(separator: separator)
     }
 }
 
 class ViewController: UIViewController {
 
-    enum TestType {
-        case one, two, three, four, five, six, seven, eight, nine, ten
-    }
-    
     @IBOutlet weak var label: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let text = String {
-            "222"
-            "444"
-        }
-        print(text)
+        print(
+            String(separator: "-") {
+                "hello"
+                "we are usiong"
+                "function builders"
+                for name in ["zhang", "wang", "li", "zhao"] {
+                    "hello"
+                    name
+                }
+            }
+        )
         // Do any additional setup after loading the view.
     }
 
